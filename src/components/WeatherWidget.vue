@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import {ref, watchEffect, computed, toRefs, reactive} from 'vue'
 
+let displayDropdownMenu = ref<boolean>(false);
+
+function toggleDropdownMenu() {
+   displayDropdownMenu.value = !displayDropdownMenu.value
+}
+
 interface Location {
   lat: string;
   lon: string;
@@ -59,12 +65,28 @@ function refactorTemperatureValue(value: number = 0) {
 
 <template>
   <div class="weather-card">
+    <div class="dropdown-menu"
+         :style="!displayDropdownMenu ? {'display': 'none'} : ''">
+
+    </div>
     <div class="weather-card__header">
-      <div class="weather-card__header-location">
-        {{ currentCity[0]?.name }}, {{weatherData?.sys.country}}
+      <div class="weather-card__header-title">
+        <template v-if="displayDropdownMenu">
+            Settings
+        </template>
+        <template v-else>
+            {{ currentCity[0]?.name }}, {{weatherData?.sys.country}}
+        </template>
       </div>
-      <button class="weather-card__header-setting">
-        <img src="@/assets/setting.svg" alt="icon-setting">
+      <button
+          @click="toggleDropdownMenu"
+          :class="displayDropdownMenu ? 'active' : ''"
+          class="weather-card__header-setting">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px">
+            <path fill-rule="evenodd"  fill="rgb(0, 0, 0)" d="M-0.000,-0.000 L17.000,-0.000 L17.000,2.000 L-0.000,2.000 L-0.000,-0.000 Z"/>
+            <path fill-rule="evenodd"  fill="rgb(0, 0, 0)" d="M-0.000,7.000 L17.000,7.000 L17.000,9.000 L-0.000,9.000 L-0.000,7.000 Z"/>
+            <path fill-rule="evenodd"  fill="rgb(0, 0, 0)" d="M-0.000,14.000 L17.000,14.000 L17.000,16.000 L-0.000,16.000 L-0.000,14.000 Z"/>
+          </svg>
       </button>
     </div>
     <div class="weather-card__temperature">
@@ -103,13 +125,16 @@ function refactorTemperatureValue(value: number = 0) {
   margin: 15px;
   padding: 10px;
   box-shadow: 1px 1px 7px 1px rgba(83, 83, 83, 0.5);
+  position: relative;
+  z-index: 0;
   &__header{
     display: flex;
     justify-content: space-between;
   }
-  &__header-location{
+  &__header-title{
     font-size: 15px;
     font-weight: bolder;
+    z-index: 10;
   }
   &__header-setting{
     border: none;
@@ -143,6 +168,35 @@ function refactorTemperatureValue(value: number = 0) {
         height: 16px;
       }
     }
+  }
+}
+.dropdown-menu{
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  height: 350px;
+  box-shadow: 1px 1px 7px 1px rgba(83, 83, 83, 0.5);
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+path, svg{
+  position: sticky;
+  z-index: 10;
+  transition: transform 0.25s;
+}
+.active{
+  & path:nth-of-type(1){
+    transform: rotate(45deg);
+    transform-origin: -1px 3px;
+  }
+  & path:nth-of-type(2){
+    display: none;
+  }
+  & path:nth-of-type(3){
+    transform: rotate(-45deg);
+    transform-origin: 0px 13px;
   }
 }
 </style>
