@@ -2,18 +2,19 @@
 
 import { defineComponent } from 'vue';
 import WeatherWidget from '@/components/WeatherWidget.vue';
+import DraggableList from '@/components/DraggableList.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    WeatherWidget
+    WeatherWidget,
+    DraggableList
   }
 });
 </script>
+
 <template>
-  <weather-widget
-      APIKey="d136d9defb07d07b334ea13f38c861d4"
-  />
+  <weather-widget/>
 </template>
 
 <style lang="scss">
