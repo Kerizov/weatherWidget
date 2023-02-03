@@ -29,13 +29,13 @@ const options: {enableHighAccuracy: boolean, timeout: number, maximumAge: number
   maximumAge: 0
 };
 
-function success(pos: any): void {
+function success(pos: object): void {
   const crd = pos.coords;
   location.lat = crd.latitude
   location.lon = crd.longitude
 }
 
-function error(err: any): void {
+function error(err: object): void {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
 
@@ -46,6 +46,7 @@ function error(err: any): void {
 
 const weatherData = ref<object>()
 const currentCity = ref<object>([])
+
 
 
 watchEffect(async (): Promise<void> => {
@@ -59,6 +60,7 @@ watchEffect(async (): Promise<void> => {
     console.log(e)
   }
 })
+
 interface Locations {
   id: number,
   name: string,
@@ -79,6 +81,7 @@ if(localStorage.getItem('locations')){
 * else data writable to the object 'locations', and set to the localStorage.
 * Temp data resets to zero
 */
+
 async function addLocation(): Promise<void> {
   if(newLocation.value.name !== undefined && newLocation.value.name.length >= 3  && locations.value.length <= 3){
     try{
@@ -117,6 +120,7 @@ function changeLocation(value: any): void{
 /*
 * Rounds the value to tenths
 */
+
 function refactorTemperatureValue(value: number = 0){
   return computed(() => +value?.toFixed(1));
 }
