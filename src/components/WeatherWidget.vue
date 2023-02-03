@@ -62,7 +62,7 @@ interface Locations {
   name: string,
   location: object,
 }
-const locations = ref<Locations[] | any>()
+const locations = ref<Locations[]>([])
 const newLocation = ref<any>({})
 const findLocation = ref<any>();
 const incorrectValue = ref<boolean>(false);
