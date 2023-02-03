@@ -13,6 +13,7 @@ export default {
     getNewWeatherData(index){
       this.$emit('updateLocation', this.$props.list[index].location)
     },
+    // Removing current element from list and from localStorage
     removeAt(idx) {
       this.list.splice(idx, 1);
       let Storage = JSON.parse(localStorage.getItem('locations'))
