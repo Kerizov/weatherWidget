@@ -10,8 +10,6 @@ function toggleDropdownMenu(): void {
   displayDropdownMenu.value = !displayDropdownMenu.value
 }
 
-
-
 // Default value for the location (Moscow, RU)
 interface Location {
   lat: string;
@@ -29,13 +27,13 @@ const options: {enableHighAccuracy: boolean, timeout: number, maximumAge: number
   maximumAge: 0
 };
 
-function success(pos: object): void {
+function success(pos: any): void {
   const crd = pos.coords;
   location.lat = crd.latitude
   location.lon = crd.longitude
 }
 
-function error(err: object): void {
+function error(err: any): void {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
 
@@ -46,8 +44,6 @@ function error(err: object): void {
 
 const weatherData = ref<object>()
 const currentCity = ref<object>([])
-
-
 
 watchEffect(async (): Promise<void> => {
   const currentLocation = toRefs(location)
@@ -81,7 +77,6 @@ if(localStorage.getItem('locations')){
 * else data writable to the object 'locations', and set to the localStorage.
 * Temp data resets to zero
 */
-
 async function addLocation(): Promise<void> {
   if(newLocation.value.name !== undefined && newLocation.value.name.length >= 3  && locations.value.length <= 3){
     try{
