@@ -6,15 +6,17 @@ import CustomButton from "@/components/UI/CustomButton.vue";
 
 let displayDropdownMenu = ref<boolean>(false);
 
-function toggleDropdownMenu() {
-   displayDropdownMenu.value = !displayDropdownMenu.value
+function toggleDropdownMenu(): void {
+  displayDropdownMenu.value = !displayDropdownMenu.value
 }
 
+
+
+// Default value for the location (Moscow, RU)
 interface Location {
   lat: string;
   lon: string;
 }
-// Default value for the location
 const location = reactive<Location>({
   lat: '55.8168',
   lon: '37.7982',
@@ -42,11 +44,11 @@ function error(err: any): void {
   await navigator.geolocation.getCurrentPosition(success, error, options)
 })()
 
-const weatherData = ref<any>()
-const currentCity = ref<any>([])
+const weatherData = ref<object>()
+const currentCity = ref<object>([])
 
 
-watchEffect(async () => {
+watchEffect(async (): Promise<void> => {
   const currentLocation = toRefs(location)
   try{
     weatherData.value = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${currentLocation.lat.value}&lon=${currentLocation.lon.value}&appid=d136d9defb07d07b334ea13f38c861d4&units=metric`)
@@ -57,8 +59,12 @@ watchEffect(async () => {
     console.log(e)
   }
 })
-
-const locations = ref<any>([])
+interface Locations {
+  id: number,
+  name: string,
+  location: object,
+}
+const locations = ref<Locations[] | any>()
 const newLocation = ref<any>({})
 const findLocation = ref<any>();
 const incorrectValue = ref<boolean>(false);
@@ -67,7 +73,13 @@ if(localStorage.getItem('locations')){
   locations.value = JSON.parse(localStorage.getItem('locations') || '{}')
 }
 
-async function addLocation(){
+/*
+* Send request to API for find a location by city name.
+* If request return empty value, display the validation error,
+* else data writable to the object 'locations', and set to the localStorage.
+* Temp data resets to zero
+*/
+async function addLocation(): Promise<void> {
   if(newLocation.value.name !== undefined && newLocation.value.name.length >= 3  && locations.value.length <= 3){
     try{
       findLocation.value = await fetch(`https://openweathermap.org/data/2.5/find?q=${newLocation.value?.name}&type=like&sort=population&cnt=30&appid=439d4b804bc8187953eb36d2a8c26a02&_=1675405012256`)
@@ -92,13 +104,20 @@ async function addLocation(){
   }
 }
 
-function changeLocation(value: any){
+/*
+* After call function changing current location and
+* on main view showing new weather information
+*/
+function changeLocation(value: any): void{
   location.lat = value.lat
   location.lon = value.lon
   toggleDropdownMenu()
 }
 
-function refactorTemperatureValue(value: number = 0) {
+/*
+* Rounds the value to tenths
+*/
+function refactorTemperatureValue(value: number = 0){
   return computed(() => +value?.toFixed(1));
 }
 </script>
