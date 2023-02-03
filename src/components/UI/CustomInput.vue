@@ -37,6 +37,7 @@ label{
   padding: 10px;
   margin: 5px 0;
   border: none;
+  outline: none;
   box-shadow: 1px 1px 7px 1px rgba(83, 83, 83, 0.5);
 }
 </style>
