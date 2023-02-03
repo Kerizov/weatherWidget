@@ -7,7 +7,7 @@ import CustomButton from "@/components/UI/CustomButton.vue";
 let displayDropdownMenu = ref<boolean>(false);
 
 function toggleDropdownMenu(): void {
-   displayDropdownMenu.value = !displayDropdownMenu.value
+  displayDropdownMenu.value = !displayDropdownMenu.value
 }
 
 
@@ -48,7 +48,8 @@ const weatherData = ref<object>()
 const currentCity = ref<object>([])
 
 
-watchEffect(async (): void => {
+
+watchEffect(async (): Promise<void> => {
   const currentLocation = toRefs(location)
   try{
     weatherData.value = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${currentLocation.lat.value}&lon=${currentLocation.lon.value}&appid=d136d9defb07d07b334ea13f38c861d4&units=metric`)
@@ -60,9 +61,14 @@ watchEffect(async (): void => {
   }
 })
 
-const locations = ref<object>([])
-const newLocation = ref<object>({})
-const findLocation = ref<object>();
+interface Locations {
+  id: number,
+  name: string,
+  location: object,
+}
+const locations = ref<Locations[] | any>()
+const newLocation = ref<any>({})
+const findLocation = ref<any>();
 const incorrectValue = ref<boolean>(false);
 
 if(localStorage.getItem('locations')){
@@ -75,7 +81,8 @@ if(localStorage.getItem('locations')){
 * else data writable to the object 'locations', and set to the localStorage.
 * Temp data resets to zero
 */
-async function addLocation(): void{
+
+async function addLocation(): Promise<void> {
   if(newLocation.value.name !== undefined && newLocation.value.name.length >= 3  && locations.value.length <= 3){
     try{
       findLocation.value = await fetch(`https://openweathermap.org/data/2.5/find?q=${newLocation.value?.name}&type=like&sort=population&cnt=30&appid=439d4b804bc8187953eb36d2a8c26a02&_=1675405012256`)
@@ -113,7 +120,8 @@ function changeLocation(value: any): void{
 /*
 * Rounds the value to tenths
 */
-function refactorTemperatureValue(value: number = 0): number{
+
+function refactorTemperatureValue(value: number = 0){
   return computed(() => +value?.toFixed(1));
 }
 </script>
