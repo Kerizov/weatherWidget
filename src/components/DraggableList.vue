@@ -58,7 +58,7 @@ export default {
 
 <style scoped>
 .btn{
-  width: 120px;
+  width: 140px;
   height: 25px;
   border: none;
   background-color: transparent;
