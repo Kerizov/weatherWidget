@@ -62,7 +62,7 @@ interface Locations {
   name: string,
   location: object,
 }
-const locations = ref<Locations[] | any>()
+const locations = ref<Locations[]>([])
 const newLocation = ref<any>({})
 const findLocation = ref<any>();
 const incorrectValue = ref<boolean>(false);
@@ -167,60 +167,7 @@ function refactorTemperatureValue(value: number = 0){
       </button>
     </div>
     <div class="weather-card__temperature">
-      <template v-if="weatherData?.weather[0].icon === '01d'">
-        <img src="@/assets/weather-status/01d.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '01n'">
-        <img src="@/assets/weather-status/01n.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '02d'">
-        <img src="@/assets/weather-status/02d.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '02n'">
-        <img src="@/assets/weather-status/02n.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '03d'">
-        <img src="@/assets/weather-status/03d.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '03n'">
-        <img src="@/assets/weather-status/03n.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '04d'">
-        <img src="@/assets/weather-status/04d.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '04n'">
-        <img src="@/assets/weather-status/04n.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '09d'">
-        <img src="@/assets/weather-status/09d.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '09n'">
-        <img src="@/assets/weather-status/09n.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '10d'">
-        <img src="@/assets/weather-status/10d.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '10n'">
-        <img src="@/assets/weather-status/10n.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '11d'">
-        <img src="@/assets/weather-status/11d.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '11n'">
-        <img src="@/assets/weather-status/11n.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '13d'">
-        <img src="@/assets/weather-status/13d.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '13n'">
-        <img src="@/assets/weather-status/13n.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '50d'">
-        <img src="@/assets/weather-status/50d.png" alt="weather-status">
-      </template>
-      <template v-if="weatherData?.weather[0].icon === '50n'">
-        <img src="@/assets/weather-status/50n.png" alt="weather-status">
-      </template>
+      <img :src="`http://openweathermap.org/img/wn/${weatherData?.weather[0].icon}@2x.png`" alt="weather-status">
         <h1>{{refactorTemperatureValue(weatherData?.main.temp)}}&#176;C</h1>
     </div>
     <div class="weather-card__temperature-feels-like">
@@ -337,7 +284,7 @@ function refactorTemperatureValue(value: number = 0){
   }
   & path:nth-of-type(3){
     transform: rotate(-45deg);
-    transform-origin: 0px 13px;
+    transform-origin: 0 13px;
   }
 }
 </style>
